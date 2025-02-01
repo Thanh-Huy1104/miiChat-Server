@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { createHotspotDTO } from "./hotspot.dtos";
 import { IHotspot } from "./hotspots.schema";
-import { createHotspot, upvoteHotspot, downvoteHotspot } from "./hotspot.service";
+import { createHotspot, upvoteHotspot, downvoteHotspot, getActiveHotspots, getInactiveHotspots } from "./hotspot.service";
 
 const router = Router();
 
@@ -11,7 +11,7 @@ router.post("/upvote", async (req, res) => {
   try {
     await upvoteHotspot(req.body);
     res.status(200)
-  } catch (error ) {
+  } catch (error) {
     //if there was an error, that means we had an error with one of the database functions
     res.status(500)
   }
@@ -33,6 +33,32 @@ router.post("/createHotspot", async (req: Request<createHotspotDTO>, res: Respon
     res.status(200).json(hotspot);
   } catch (error) {
     res.status(500).json({ message: `An error has occurred while creating hotspot: ${error}` });
+  }});
+
+router.get("/getActiveHotspots", async (req: Request<createHotspotDTO>, res: Response): Promise<any> => {
+  try {
+    const activeHotspots: IHotspot[] | null = await getActiveHotspots();
+
+    if (activeHotspots) {
+      res.status(200).json(activeHotspots);
+    } else {
+      res.status(400).json({ message: "No active hotspots found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: `An error has occurred while fetching active hotspots: ${error}` });
+  }});
+
+router.get("/getInactiveHotspots", async (req: Request<createHotspotDTO>, res: Response): Promise<any> => {
+  try {
+    const inActiveHotspots: IHotspot[] | null = await getInactiveHotspots();
+
+    if (inActiveHotspots) {
+      res.status(200).json(inActiveHotspots);
+    } else {
+      res.status(400).json({ message: "No inactive hotspots found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: `An error has occurred while fetching inactive hotspots: ${error}` });
   }});
 
 export default router;
