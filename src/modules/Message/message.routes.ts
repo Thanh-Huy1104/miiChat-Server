@@ -7,7 +7,7 @@ const router = Router();
 
 router.get("/", () => console.log("Hello from hotspot routes"));
 
-router.post("/createMessage", async (req: Request<createMessageDTO>, res: Response): Promise<any> => {
+router.post("/sendMessage", async (req: Request<createMessageDTO>, res: Response): Promise<any> => {
   try {
     const { chatID, senderID, content } = req.body;
     const message: IMessage = await createMessage(chatID, senderID, content);
