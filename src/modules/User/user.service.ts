@@ -1,6 +1,7 @@
 import { IUser } from "./user.schema";
 import { CreateUserDto } from './user.dto';
 import User from './user.schema';
+import { v4 as uuidv4 } from 'uuid';
 
 
 //Return a list of all the users
@@ -16,6 +17,11 @@ const getUser = async (userId: number): Promise<IUser | null> => {
 
 const createUser = async (createUserDto: CreateUserDto): Promise<IUser> => {
     //pass in empty array for hotspot id and votes
+    const user = {
+      userID: uuidv4(),
+      ...createUserDto
+    }
+
     return await User.create(createUserDto);
 
 }

@@ -1,7 +1,7 @@
-import mongoose, { Types } from "mongoose";
+import mongoose from "mongoose";
 
 export interface IUser {
-  _id: Types.ObjectId
+  userID: string;
   username: string;
   password: string;
   profileImg: number;
@@ -13,6 +13,7 @@ export interface IUser {
 
 const userSchema = new mongoose.Schema(
   {
+    userID: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profileImg: { type: Number, default: -1 },
