@@ -5,6 +5,7 @@ import hotSpotRoutes from './modules/Hotspot/hotspot.routes';
 import potentialHotspotRoutes from './modules/PotentialHotspot/potentialHotspot.routes';
 import chatRoutes from './modules/Chat/chat.routes';
 import messageRoutes from './modules/Message/message.routes';
+const connectDB = require("./config/db");
 
 dotenv.config();
 
