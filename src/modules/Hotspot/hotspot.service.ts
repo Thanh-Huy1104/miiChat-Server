@@ -5,7 +5,7 @@ import {createHotspotDTO} from "./hotspot.dtos";
 
 export const createHotspot = async (name: string, coordinates: number[], description: string, address: string, tags: string[]): Promise<IHotspot> => {
   const hotSpotID = uuidv4();
-  const chat = createChat(hotSpotID);
+  const chat = await createChat(hotSpotID);
 
   const hotspot = {
     hotSpotID,

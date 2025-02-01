@@ -1,4 +1,6 @@
 import Message, { IMessage } from "../Message/message.schema";
+import Chat, { IChat } from "./chat.schema";
+import { v4 as uuidv4 } from 'uuid';
 
 export const getMessages = async (chatID: string, lastMessageID?: string): Promise<IMessage[] | null> => {
   try {
@@ -29,3 +31,14 @@ export const getMessages = async (chatID: string, lastMessageID?: string): Promi
     return null;
   }
 };
+
+export const createChat = async (hotSpotID: string): Promise<IChat> => {
+  const chatID = uuidv4();
+
+  const chat = {
+    chatID,
+    hotSpotID,
+  }
+  
+  return await Chat.create(chat);
+}
