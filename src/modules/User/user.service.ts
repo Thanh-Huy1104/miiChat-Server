@@ -16,13 +16,12 @@ const getUser = async (userId: number): Promise<IUser | null> => {
 }
 
 const createUser = async (createUserDto: CreateUserDto): Promise<IUser> => {
-    //pass in empty array for hotspot id and votes
     const user = {
       userID: uuidv4(),
       ...createUserDto
     }
 
-    return await User.create(createUserDto);
+    return await User.create(user);
 
 }
 
