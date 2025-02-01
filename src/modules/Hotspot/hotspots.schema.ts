@@ -9,6 +9,7 @@ export interface IHotspot {
   address: string;
   tags: Array<string>;
   numVotes: number;
+  backgroundImg: string;
   createdAt: Date;
 }
 
@@ -22,6 +23,7 @@ const hotSpotSchema = new mongoose.Schema(
     address: { type: String, required: true },
     tags: { type: Array, default: [] },
     numVotes: { type: Number, default: 0 },
+    backgroundImg: { type: String, default: "" },
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true }
