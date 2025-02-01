@@ -32,7 +32,7 @@ router.post("/createUser", async (req, res) => {
     try {
         const user: IUser = await createUser(req.body);
         res.status(200).json(user);
-    } catch (error: unknown) {
+    } catch (error) {
         if (error instanceof Error && error.message == "Username already in use") {
             res.status(400).json({ message: error.message })
         }
