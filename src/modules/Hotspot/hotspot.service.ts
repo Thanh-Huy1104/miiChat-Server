@@ -17,6 +17,8 @@ export const createHotspot = async (name: string, coordinates: number[], descrip
     tags,
   };
 
+  // MAKE NUMVOTES 1, NOT 0
+
   return await Hotspot.create(hotspot);
 }
 
