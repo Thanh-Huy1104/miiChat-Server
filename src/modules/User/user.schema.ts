@@ -1,18 +1,18 @@
 import mongoose from "mongoose";
 
 export interface IUser extends Document {
-  id: string;
+  _id: string;
   username: string;
   password: string;
   profileImg: number;
   HotspotIDs: string[];
   Votes: string[];
   createdAt: Date;
+  createdHotspot: boolean;
 }
 
 const userSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true },
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     profileImg: { type: Number, default: -1 },
