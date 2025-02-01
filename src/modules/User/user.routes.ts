@@ -1,6 +1,7 @@
-import { Router } from "express";
+import { Router, Request, Response } from "express";
 import { IUser } from "./user.schema";
-import { getUsers, getUser, createUser } from './user.service';
+import { getUsers, getUser, createUser, joinHotspot } from './user.service';
+import { joinHotspotDTO } from "../Hotspot/hotspot.dtos";
 
 const router = Router();
 
@@ -38,6 +39,16 @@ router.post("/createUser", async (req, res) => {
         }
         res.status(500).json({ message: `An error has occurred while creating user: ${error}` });
     }
-})
+});
+
+router.post("/joinHotspot", async (req: Request<joinHotspotDTO>, res: Response): Promise<any> => {
+  try {
+    const { hotSpotID, userID } = req.body;
+    const user: IUser | null = await joinHotspot(hotSpotID, userID);
+
+    res.status(200).json(user);    
+  } catch (error) {
+    res.status(500).json({ message: `An error has occurred while joining hotspot: ${error}` });
+  }});
 
 export default router;

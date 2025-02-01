@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
-import { createHotspotDTO } from "./hotspot.dtos";
+import { createHotspotDTO, joinHotspotDTO } from "./hotspot.dtos";
 import { IHotspot } from "./hotspots.schema";
-import { createHotspot, upvoteHotspot, downvoteHotspot, getActiveHotspots, getInactiveHotspots } from "./hotspot.service";
+import { createHotspot, upvoteHotspot, downvoteHotspot, getActiveHotspots, getInactiveHotspots, deactivateHotspot } from "./hotspot.service";
 
 const router = Router();
 
@@ -28,8 +28,8 @@ router.post("/downvote", async (req, res) => {
 
 router.post("/createHotspot", async (req: Request<createHotspotDTO>, res: Response): Promise<any> => {
   try {
-    const { name, coordinates, description, address, tags } = req.body;
-    const hotspot: IHotspot = await createHotspot(name, coordinates, description, address, tags);
+    const { name, coordinates, description, address, tags, backgroundImg, expiryDate } = req.body;
+    const hotspot: IHotspot = await createHotspot(name, coordinates, description, address, tags, backgroundImg, expiryDate);
     res.status(200).json(hotspot);
   } catch (error) {
     res.status(500).json({ message: `An error has occurred while creating hotspot: ${error}` });
@@ -59,6 +59,16 @@ router.get("/getInactiveHotspots", async (req: Request<createHotspotDTO>, res: R
     }
   } catch (error) {
     res.status(500).json({ message: `An error has occurred while fetching inactive hotspots: ${error}` });
+  }});
+
+router.post("/deactiveHospot", async (req: Request, res: Response): Promise<any> => {
+  try {
+    const { hotspotID } = req.body;
+
+    deactivateHotspot(hotspotID);
+    res.status(200).json({ message: "Hotspot deactivated" });    
+  } catch (error) {
+    res.status(500).json({ message: `An error has occurred while deactivating a hotspot: ${error}` });
   }});
 
 export default router;

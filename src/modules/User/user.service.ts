@@ -33,4 +33,14 @@ const createUser = async (createUserDto: CreateUserDto): Promise<IUser> => {
 
 }
 
+export const joinHotspot = async (hotSpotID: string, userID: string): Promise<IUser | null> => {
+    const user = await User.findOneAndUpdate(
+      { userID },
+      { $push: { HotspotIDs: hotSpotID } },
+      { new: true }
+    ).exec();
+    
+    return user;
+}
+
 export { getUsers, getUser, createUser };
