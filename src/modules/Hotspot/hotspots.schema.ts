@@ -1,11 +1,25 @@
+export interface IHotspot {
+  hotSpotID: string;
+  chatID: string;
+  name: string;
+  coordinates: Array<number>;
+  description: string;
+  address: string;
+  tags: Array<string>;
+  numVotes: number;
+  createdAt: Date;
+}
+
 const hotSpotSchema = new mongoose.Schema(
   {
+    hotSpotID: { type: String, required: true },
     chatID: { type: String, required: true },
     name: { type: String, required: true },
     coordinates: { type: Array, required: true },
     description: { type: String, required: true },
     address: { type: String, required: true },
     tags: { type: Array, default: [] },
+    numVotes: { type: Number, default: 0 },
     createdAt: { type: Date, default: Date.now },
   },
   { timestamps: true }
@@ -13,4 +27,4 @@ const hotSpotSchema = new mongoose.Schema(
 
 const HotSpot = mongoose.model("Hotspot", hotSpotSchema);
 
-module.exports = HotSpot;
+export default HotSpot;
