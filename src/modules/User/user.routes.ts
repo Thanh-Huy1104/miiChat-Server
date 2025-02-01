@@ -16,9 +16,12 @@ router.get("/getUsers", async (_, res) => {
 
 router.get("/getUser", async (req, res) => {
     try {
-        const user: IUser = await getUser(req.body);
+        const user: IUser | null = await getUser(req.body);
 
-        res.status(200).json(user);
+        if (user)
+            res.status(200).json(user);
+        else
+            res.status(404).json({ message: `This user does not exist`});
     } catch (error){
         res.status(500).json({ message: `An error has occurred with fetching user with id: ${req.body} : ${error}` });
     }
@@ -29,7 +32,10 @@ router.post("/createUser", async (req, res) => {
     try {
         const user: IUser = await createUser(req.body);
         res.status(200).json(user);
-    } catch (error) {
+    } catch (error: unknown) {
+        if (error instanceof Error && error.message == "Username already in use") {
+            res.status(400).json({ message: error.message })
+        }
         res.status(500).json({ message: `An error has occurred while creating user: ${error}` });
     }
 })
