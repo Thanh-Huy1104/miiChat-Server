@@ -11,7 +11,7 @@ const getUsers = async (): Promise<IUser[]> => {
 }
 
 const getUser = async (userId: number): Promise<IUser | null> => {
-    const user: IUser | null = await User.findById(userId);
+    const user: IUser | null = await User.findOne({userId});
     return user;
 }
 
@@ -21,9 +21,16 @@ const createUser = async (createUserDto: CreateUserDto): Promise<IUser> => {
       ...createUserDto
     }
 
+    //find user with username and if null then create and if not null then throw error
+    //check if username already exists in database
+    const userCheck: IUser | null = await User.findOne({username: createUserDto.username})
+
+    if (userCheck) {
+        throw new Error("Username already in use")
+    }
+
     return await User.create(user);
 
 }
 
-
-module.exports = { getUsers, getUser, createUser };
+export { getUsers, getUser, createUser };
