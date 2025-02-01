@@ -1,7 +1,6 @@
 import { Router } from "express";
 import { IUser } from "./user.schema";
-
-const { getUsers, getUser, createUser }  = require("./user.service");
+import { getUsers, getUser, createUser } from './user.service';
 
 const router = Router();
 
@@ -18,6 +17,7 @@ router.get("/getUsers", async (_, res) => {
 router.get("/getUser", async (req, res) => {
     try {
         const user: IUser = await getUser(req.body);
+
         res.status(200).json(user);
     } catch (error){
         res.status(500).json({ message: `An error has occurred with fetching user with id: ${req.body} : ${error}` });
