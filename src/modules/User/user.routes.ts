@@ -34,7 +34,7 @@ router.post("/createUser", async (req, res) => {
         res.status(200).json(user);
     } catch (error) {
         if (error instanceof Error && error.message == "Username already in use") {
-            res.status(400).json({ message: error.message })
+            res.status(401).json({ message: error.message })
         }
         res.status(500).json({ message: `An error has occurred while creating user: ${error}` });
     }
