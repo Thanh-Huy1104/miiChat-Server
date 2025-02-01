@@ -1,6 +1,5 @@
 const hotSpotSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true },
     chatID: { type: String, required: true },
     name: { type: String, required: true },
     coordinates: { type: Array, required: true },

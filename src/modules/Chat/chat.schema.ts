@@ -1,6 +1,5 @@
 const chatSchema = new mongoose.Schema(
   {
-    id: { type: String, required: true },
     hotSpotID: { type: String, required: true },
     messages: { type: Array, default: [] },
   },
@@ -9,4 +8,4 @@ const chatSchema = new mongoose.Schema(
 
 const Chat = mongoose.model("Chat", chatSchema);
 
-module.exports = Chat;
+export default Chat;
