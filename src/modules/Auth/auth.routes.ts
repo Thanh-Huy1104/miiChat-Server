@@ -12,7 +12,7 @@ router.post("/", async (req: Request<LoginDTO>, res: Response): Promise<any> => 
 
   const result: IUser | null = await loginUser(username, password);
 
-  if (result && result._id) {
+  if (result && result.userID) {
     return res.status(200).json({ user: result });
   }
 
