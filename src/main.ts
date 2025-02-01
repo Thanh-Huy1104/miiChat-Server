@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from "cors";
 import dotenv from 'dotenv';
 import userRoutes from './modules/User/user.routes';
 import hotSpotRoutes from './modules/Hotspot/hotspot.routes';
@@ -18,6 +19,7 @@ app.get('/', (req, res) => {
 
 connectDB();
 
+app.use(cors());
 app.use(express.json());
 
 app.use("/api/users", userRoutes);
