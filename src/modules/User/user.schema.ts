@@ -1,3 +1,15 @@
+import mongoose from "mongoose";
+
+export interface IUser extends Document {
+  id: string;
+  username: string;
+  password: string;
+  profileImg: number;
+  HotspotIDs: string[];
+  Votes: string[];
+  createdAt: Date;
+}
+
 const userSchema = new mongoose.Schema(
   {
     id: { type: String, required: true },
@@ -13,4 +25,4 @@ const userSchema = new mongoose.Schema(
 
 const User = mongoose.model("User", userSchema);
 
-module.exports = User;
+export default User;
