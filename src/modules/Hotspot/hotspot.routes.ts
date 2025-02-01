@@ -1,6 +1,7 @@
 import { Router, Request, Response } from "express";
 import { createHotspotDTO } from "./hotspot.dtos";
 import { IHotspot } from "./hotspots.schema";
+import { createHotspot } from "./hotspot.service";
 
 const router = Router();
 
