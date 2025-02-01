@@ -1,6 +1,6 @@
 import mongoose, { Types } from "mongoose";
 
-export interface IUser extends Document {
+export interface IUser {
   _id: Types.ObjectId
   username: string;
   password: string;
@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
     HotspotIDs: { type: Array, default: [] },
     Votes: { type: Array, default: [] },
     createdAt: { type: Date, default: Date.now },
+    createdHotspot: { type: Boolean, default: false }
   },
   { timestamps: true }
 );
