@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export interface IHotspot {
   hotSpotID: string;
   chatID: string;

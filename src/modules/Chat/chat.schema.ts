@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 import { IMessage } from "../Message/message.schema";
 
 export interface IChat {
