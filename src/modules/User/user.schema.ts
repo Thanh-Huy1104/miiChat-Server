@@ -6,10 +6,15 @@ export interface IUser {
   password: string;
   profileImg: number;
   HotspotIDs: string[];
-  Votes: string[];
+  Votes: Vote[];
   createdAt: Date;
   createdHotspot: boolean;
 }
+
+export type Vote = {
+  hotspotID: string;
+  isUpvote: boolean;
+};
 
 const userSchema = new mongoose.Schema(
   {
