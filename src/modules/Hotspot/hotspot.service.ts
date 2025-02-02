@@ -3,6 +3,7 @@ import Hotspot, { IHotspot } from './hotspots.schema';
 import { createChat } from '../Chat/chat.service';
 import {createHotspotDTO} from "./hotspot.dtos";
 import { hotspotThreshold } from '../../util/Constant';
+import User from '../User/user.schema';
 
 export const createHotspot = async (name: string, coordinates: number[], description: string, address: string, tags: string[], backgroundImg: string, expiryDate: Date): Promise<IHotspot> => {
   const hotSpotID = uuidv4();
@@ -25,7 +26,7 @@ export const createHotspot = async (name: string, coordinates: number[], descrip
   return await Hotspot.create(hotspot);
 }
 
-export const upvoteHotspot = async (hotSpotID: string) => {
+export const upvoteHotspot = async (hotSpotID: string, userID: string) => {
   //Get the hotspot with input details
   const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
       {hotSpotID: hotSpotID},
@@ -36,17 +37,30 @@ export const upvoteHotspot = async (hotSpotID: string) => {
   if (hotspot && hotspot.numVotes >= hotspotThreshold) {
     await Hotspot.findOneAndUpdate(
       { hotSpotID: hotspot.hotSpotID },
-      { isActive: true });
+      { isActive: true, expiryDate: new Date(Date.now() + 2 * 60 * 1000) });
   }
-    
+
+  await User.findOneAndUpdate(
+    { userID: userID },
+    { $push: { Votes: hotSpotID } }
+  );
+
+  console.log("Done upvoting");    
 }
 
-export const downvoteHotspot = async (hotspotID: string) => {
+export const downvoteHotspot = async (hotspotID: string, userID: string) => {
   //Get the hotspot with input details
   const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
       {hotSpotID: hotspotID},
       { $dec: { numVotes: 1 }
       });
+
+  await User.findOneAndUpdate(
+    { userID: userID },
+    { $push: { Votes: hotspotID } }
+  );
+
+  console.log("Done downvoting");
 }
 
 export const getActiveHotspots = async (): Promise<IHotspot[] | null> => {
@@ -64,5 +78,5 @@ export const getHotspotByID = async (hotSpotID: string): Promise<IHotspot | null
 export const deactivateHotspot = async (hotSpotID: string) => {
   await Hotspot.findOneAndUpdate(
     { hotSpotID },
-    { isActive: false })
+    { isActive: false, numVotes: 0, expiryDate: new Date(Date.now() + 2 * 60 * 1000) })
   };

@@ -28,7 +28,7 @@ const hotSpotSchema = new mongoose.Schema(
     backgroundImg: { type: String, default: "" },
     isActive: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
-    expiryDate: { type: Date, default: () => new Date(Date.now() + 2 * 60 * 1000) },
+    expiryDate: { type: Date, default: () => new Date(Date.now() + 20 * 60 * 1000) },
   },
   { timestamps: true }
 );

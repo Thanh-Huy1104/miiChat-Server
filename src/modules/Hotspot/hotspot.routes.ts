@@ -9,8 +9,8 @@ router.get("/", () => console.log("Hello from hotspot routes"));
 
 router.post("/upvote", async (req, res) => {
   try {
-    const { hotspotID } = req.body;
-    await upvoteHotspot(hotspotID);
+    const { hotspotID, userID } = req.body;
+    await upvoteHotspot(hotspotID, userID);
     res.status(200)
   } catch (error) {
     //if there was an error, that means we had an error with one of the database functions
@@ -20,8 +20,8 @@ router.post("/upvote", async (req, res) => {
 
 router.post("/downvote", async (req, res) => {
   try {
-    const { hotspotID } = req.body;
-    await downvoteHotspot(hotspotID);
+    const { hotspotID, userID } = req.body;
+    await downvoteHotspot(hotspotID, userID);
     res.status(200)
   } catch (error) {
     res.status(500);
@@ -78,11 +78,12 @@ router.get("/getInactiveHotspots", async (req: Request<createHotspotDTO>, res: R
     }}
   );
 
-router.post("/deactiveHospot", async (req: Request, res: Response): Promise<any> => {
+router.post("/deactivateHotspot", async (req: Request, res: Response): Promise<any> => {
   try {
     const { hotspotID } = req.body;
 
     deactivateHotspot(hotspotID);
+    console.log("Done");
     res.status(200).json({ message: "Hotspot deactivated" });    
   } catch (error) {
     res.status(500).json({ message: `An error has occurred while deactivating a hotspot: ${error}` });
