@@ -34,7 +34,7 @@ export const createHotspot = async (
   return await Hotspot.create(hotspot);
 };
 
-export const upvoteHotspot = async (hotspotID: string, userID: string) => {
+export const upvoteHotspot = async (hotspotID: string, userID: string, isCancel?: string) => {
   //Get the hotspot with input details
   const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
     { hotSpotID: hotspotID },
@@ -45,21 +45,33 @@ export const upvoteHotspot = async (hotspotID: string, userID: string) => {
   if (hotspot && hotspot.numVotes >= hotspotThreshold) {
     await Hotspot.findOneAndUpdate(
       { hotSpotID: hotspot.hotSpotID },
-      { isActive: true, expiryDate: new Date(Date.now() + 2 * 60 * 1000) }
+      { isActive: true, expiryDate: new Date(Date.now() + 2 * 60 * 10000) }
     );
   }
 
-  await User.findOneAndUpdate(
-    { userID: userID },
-    {
-      $push: {
-        Votes: {
-          hotspotID: hotspotID,
-          isUpvote: true,
-        },
-      },
-    }
-  );
+  if (isCancel) {
+    await User.findOneAndUpdate(
+        { userID: userID },
+        {
+          $pull: {
+            Votes: { hotspotID: hotspotID }
+          }
+        }
+    )
+    console.log('pulled from array')
+  } else {
+    await User.findOneAndUpdate(
+        {userID: userID},
+        {
+          $push: {
+            Votes: {
+              hotspotID: hotspotID,
+              isUpvote: true,
+            },
+          },
+        }
+    );
+  }
 
   await Hotspot.findOneAndUpdate(
     { hotSpotID: hotspotID },
@@ -69,7 +81,7 @@ export const upvoteHotspot = async (hotspotID: string, userID: string) => {
   console.log("Done upvoting");
 };
 
-export const downvoteHotspot = async (hotspotID: string, userID: string) => {
+export const downvoteHotspot = async (hotspotID: string, userID: string, isCancel?: boolean) => {
   //Get the hotspot with input details
   const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
     { hotSpotID: hotspotID },
@@ -77,17 +89,31 @@ export const downvoteHotspot = async (hotspotID: string, userID: string) => {
     { new: true }
   );
 
-  await User.findOneAndUpdate(
-    { userID: userID },
-    {
-      $push: {
-        Votes: {
-          hotspotID: hotspotID,
-          isUpvote: false,
-        },
-      },
-    }
-  );
+  // if its a cancel, we're calling from upvote so we just want to remove the old upvote
+  if (isCancel) {
+    await User.findOneAndUpdate(
+        { userID: userID },
+        {
+          $pull: {
+            Votes: { hotspotID: hotspotID }
+          }
+        }
+    )
+    console.log('pulled from array')
+  }
+  else {
+    await User.findOneAndUpdate(
+        {userID: userID},
+        {
+          $push: {
+            Votes: {
+              hotspotID: hotspotID,
+              isUpvote: false,
+            },
+          },
+        }
+    );
+  }
 
   await Hotspot.findOneAndUpdate(
     { hotSpotID: hotspotID },

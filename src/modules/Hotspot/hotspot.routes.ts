@@ -9,8 +9,8 @@ router.get("/", () => console.log("Hello from hotspot routes"));
 
 router.post("/upvote", async (req, res) => {
   try {
-    const { hotspotID, userID } = req.body;
-    await upvoteHotspot(hotspotID, userID);
+    const { hotspotID, userID, isCancel } = req.body;
+    await upvoteHotspot(hotspotID, userID, isCancel);
     res.status(200)
   } catch (error) {
     //if there was an error, that means we had an error with one of the database functions
@@ -20,8 +20,8 @@ router.post("/upvote", async (req, res) => {
 
 router.post("/downvote", async (req, res) => {
   try {
-    const { hotspotID, userID } = req.body;
-    await downvoteHotspot(hotspotID, userID);
+    const { hotspotID, userID, isCancel } = req.body;
+    await downvoteHotspot(hotspotID, userID, isCancel);
     res.status(200)
   } catch (error) {
     res.status(500);
