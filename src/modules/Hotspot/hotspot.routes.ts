@@ -61,7 +61,7 @@ router.get("/getInactiveHotspots", async (req: Request<createHotspotDTO>, res: R
     res.status(500).json({ message: `An error has occurred while fetching inactive hotspots: ${error}` });
   }});
 
-  router.post("/getHostpotByID", async (req: Request, res: Response): Promise<any> => {
+  router.post("/getHotspotByID", async (req: Request, res: Response): Promise<any> => {
     try {
       const { hotspotID } = req.body;
       const hotspot: IHotspot | null = await getHotspotByID(hotspotID);
