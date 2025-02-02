@@ -3,7 +3,7 @@ import Message, { IMessage } from './message.schema';
 
 export const createMessage = async (chatID: string, content: string, senderID: string): Promise<IMessage> => {
   const messageID = uuidv4();
-  const message = {
+  const message: IMessage = {
     messageID,
     chatID,
     content,

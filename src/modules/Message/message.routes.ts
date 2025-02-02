@@ -10,7 +10,7 @@ router.get("/", () => console.log("Hello from hotspot routes"));
 router.post("/sendMessage", async (req: Request<createMessageDTO>, res: Response): Promise<any> => {
   try {
     const { chatID, senderID, content } = req.body;
-    const message: IMessage = await createMessage(chatID, senderID, content);
+    const message: IMessage = await createMessage(chatID, content, senderID);
     res.status(200).json(message);
   } catch (error) {
       res.status(500).json({ message: `An error has occurred while creating user: ${error}` });

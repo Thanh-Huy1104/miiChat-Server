@@ -5,7 +5,7 @@ export interface IMessage {
   chatID: string;
   content: string;
   senderID: string;
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 const messageSchema = new mongoose.Schema(
