@@ -41,10 +41,10 @@ export const upvoteHotspot = async (hotSpotID: string) => {
     
 }
 
-export const downvoteHotspot = async (createHotspotDTO: createHotspotDTO) => {
+export const downvoteHotspot = async (hotspotID: string) => {
   //Get the hotspot with input details
   const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
-      {hotSpotID: createHotspotDTO.hotSpotID},
+      {hotSpotID: hotspotID},
       { $dec: { numVotes: 1 }
       });
 }
