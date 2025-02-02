@@ -1,7 +1,7 @@
 import { Router, Request, Response } from "express";
 import { createHotspotDTO, joinHotspotDTO } from "./hotspot.dtos";
 import { IHotspot } from "./hotspots.schema";
-import { createHotspot, upvoteHotspot, downvoteHotspot, getActiveHotspots, getInactiveHotspots, deactivateHotspot } from "./hotspot.service";
+import { createHotspot, upvoteHotspot, downvoteHotspot, getActiveHotspots, getInactiveHotspots, deactivateHotspot, getHotspotByID } from "./hotspot.service";
 
 const router = Router();
 
@@ -60,6 +60,21 @@ router.get("/getInactiveHotspots", async (req: Request<createHotspotDTO>, res: R
   } catch (error) {
     res.status(500).json({ message: `An error has occurred while fetching inactive hotspots: ${error}` });
   }});
+
+  router.post("/getHostpotByID", async (req: Request, res: Response): Promise<any> => {
+    try {
+      const { hotspotID } = req.body;
+      const hotspot: IHotspot | null = await getHotspotByID(hotspotID);
+  
+      if (hotspot) {
+        res.status(200).json(hotspot);
+      } else {
+        res.status(400).json({ message: "No hotspot found" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: `An error has occurred while fetching hotspot: ${error}` });
+    }}
+  );
 
 router.post("/deactiveHospot", async (req: Request, res: Response): Promise<any> => {
   try {

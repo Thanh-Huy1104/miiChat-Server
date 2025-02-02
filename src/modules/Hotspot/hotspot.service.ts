@@ -25,10 +25,10 @@ export const createHotspot = async (name: string, coordinates: number[], descrip
   return await Hotspot.create(hotspot);
 }
 
-export const upvoteHotspot = async (createHotspotDTO: createHotspotDTO) => {
+export const upvoteHotspot = async (hotSpotID: string) => {
   //Get the hotspot with input details
   const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
-      {hotSpotID: createHotspotDTO.hotSpotID},
+      {hotSpotID: hotSpotID},
       { $inc: { numVotes: 1 }},
       { new: true }
   );
@@ -55,6 +55,10 @@ export const getActiveHotspots = async (): Promise<IHotspot[] | null> => {
 
 export const getInactiveHotspots = async (): Promise<IHotspot[] | null> => {
   return await Hotspot.find({ isActive: false });
+}
+
+export const getHotspotByID = async (hotSpotID: string): Promise<IHotspot | null> => {
+  return await Hotspot.findOne({ hotSpotID });
 }
 
 export const deactivateHotspot = async (hotSpotID: string) => {
