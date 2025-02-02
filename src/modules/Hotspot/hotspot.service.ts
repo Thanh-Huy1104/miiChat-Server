@@ -73,7 +73,8 @@ export const downvoteHotspot = async (hotspotID: string, userID: string) => {
   //Get the hotspot with input details
   const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
     { hotSpotID: hotspotID },
-    { $dec: { numVotes: 1 } }
+    { $dec: { numVotes: 1 } },
+    { new: true }
   );
 
   await User.findOneAndUpdate(
@@ -117,7 +118,8 @@ export const deactivateHotspot = async (hotSpotID: string) => {
       isActive: false,
       numVotes: 0,
       expiryDate: new Date(Date.now() + 2 * 60 * 1000),
-    }
+    },
+    { new: true }
   );
 
   hotspot?.userIDs.forEach(async (userID: String) => {
