@@ -6,7 +6,7 @@ export interface createHotspotDTO {
   address: string;
   tags?: Array<string>;
   numVotes?: number;
-  backgroundImg: string;
+  backgroundImg?: string;
   expiryDate?: Date;
 }
 
