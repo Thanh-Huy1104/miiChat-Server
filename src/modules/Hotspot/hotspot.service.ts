@@ -61,6 +61,11 @@ export const upvoteHotspot = async (hotspotID: string, userID: string) => {
     }
   );
 
+  await Hotspot.findOneAndUpdate(
+    { hotSpotID: hotspotID },
+    { $push: { userIDs: userID } }
+  );
+
   console.log("Done upvoting");
 };
 
@@ -83,6 +88,11 @@ export const downvoteHotspot = async (hotspotID: string, userID: string) => {
     }
   );
 
+  await Hotspot.findOneAndUpdate(
+    { hotSpotID: hotspotID },
+    { $push: { userIDs: userID } }
+  );
+
   console.log("Done downvoting");
 };
 
@@ -101,12 +111,24 @@ export const getHotspotByID = async (
 };
 
 export const deactivateHotspot = async (hotSpotID: string) => {
-  await Hotspot.findOneAndUpdate(
+  const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
     { hotSpotID },
     {
       isActive: false,
       numVotes: 0,
       expiryDate: new Date(Date.now() + 2 * 60 * 1000),
     }
+  );
+
+  hotspot?.userIDs.forEach(async (userID: String) => {
+    await User.findOneAndUpdate(
+      { userID },
+      { $pull: { HotspotIDs: hotSpotID } }
+    );
+  });
+
+  await Hotspot.findOneAndUpdate(
+    { hotSpotID },
+    { userIDs: [] }
   );
 };

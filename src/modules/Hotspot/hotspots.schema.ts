@@ -11,6 +11,7 @@ export interface IHotspot {
   numVotes: number;
   backgroundImg: string;
   isActive: boolean;
+  userIDs: Array<string>;
   createdAt: Date;
   expiryDate: Date;
 }
@@ -27,6 +28,7 @@ const hotSpotSchema = new mongoose.Schema(
     numVotes: { type: Number, default: 0 },
     backgroundImg: { type: String, default: "" },
     isActive: { type: Boolean, default: false },
+    userIDs: { type: Array, default: [] },
     createdAt: { type: Date, default: Date.now },
     expiryDate: { type: Date, default: () => new Date(Date.now() + 20 * 60 * 1000) },
   },
