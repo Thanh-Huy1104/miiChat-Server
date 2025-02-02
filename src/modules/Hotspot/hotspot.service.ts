@@ -73,7 +73,7 @@ export const downvoteHotspot = async (hotspotID: string, userID: string) => {
   //Get the hotspot with input details
   const hotspot: IHotspot | null = await Hotspot.findOneAndUpdate(
     { hotSpotID: hotspotID },
-    { $dec: { numVotes: 1 } },
+    { $inc: { numVotes: -1 } },
     { new: true }
   );
 
