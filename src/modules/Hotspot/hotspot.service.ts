@@ -45,7 +45,7 @@ export const upvoteHotspot = async (hotspotID: string, userID: string, isCancel?
   if (hotspot && hotspot.numVotes >= hotspotThreshold) {
     await Hotspot.findOneAndUpdate(
       { hotSpotID: hotspot.hotSpotID },
-      { isActive: true, expiryDate: new Date(Date.now() + 2 * 60 * 10000) }
+      { isActive: true, expiryDate: new Date(Date.now() + 2 * 60 * 1000) }
     );
   }
 
